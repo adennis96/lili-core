@@ -11,8 +11,11 @@
     <param name="port" value="$(arg serialport)" />
   </node>
 
-  <!-- Footprint Mask tf-->
-  <node pkg="tf" type="static_transform_publisher" name="base_mask_tf" args="0 0 0.0 0 0 0 base_footprint base_link 100" />
+  <!-- robot_state_publisher -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find lili_description)/lili.urdf.xacro'" />
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="5.0" />
+  </node>
 
   <!--robot_pose_ekf Node-->
   <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
