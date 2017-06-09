@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot name="lili" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find lili_description)/urdf/include/create.urdf.xacro"/>
+
+  <create/>
+
+  <link name="laser">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <!-- dimensions for lidar are rough estimates -->
+        <cylinder length="0.005" radius="0.05" />
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="laser_joint" type="fixed">
+    <!-- position of lidar is rough estimate -->
+    <origin xyz="0 0 0.2" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="laser" />
+  </joint>
+</robot>

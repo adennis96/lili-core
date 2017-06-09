@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="lili" xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find create_description)/urdf/create.urdf.xacro"/>
+  <xacro:include filename="$(find lili_description)/urdf/include/create.urdf.xacro"/>
 
   <create/>
 </robot>

@@ -1,6 +1,7 @@
 <launch>
   <arg name="serialport" default="/dev/create_base"/>
   <arg name="robot_type" default="create"/>
+  <arg name="description_urdf" default="$(find lili_description)/urdf/lili.urdf.xacro"/>
 
   <!-- Turtlebot Driver -->
   <node pkg="create_node" type="turtlebot_node.py" name="turtlebot_node" respawn="true" args="--respawnable">
@@ -12,7 +13,7 @@
   </node>
 
   <!-- robot_state_publisher -->
-  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find lili_description)/lili.urdf.xacro'" />
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg description_urdf)'" />
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
     <param name="publish_frequency" type="double" value="5.0" />
   </node>
