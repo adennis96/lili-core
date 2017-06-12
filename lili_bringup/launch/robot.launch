@@ -1,11 +1,10 @@
 <launch>
   <arg name="serialport" default="/dev/create_base"/>
-  <arg name="robot_type" default="create"/>
   <arg name="description_urdf" default="$(find lili_description)/urdf/lili.urdf.xacro"/>
 
   <!-- Turtlebot Driver -->
   <node pkg="create_node" type="turtlebot_node.py" name="turtlebot_node" respawn="true" args="--respawnable">
-    <param name="robot_type" value="$(arg robot_type)" />
+    <param name="robot_type" value="create" />
     <param name="has_gyro" value="false" />
     <param name="bonus" value="false" />
     <param name="update_rate" value="10.0" />

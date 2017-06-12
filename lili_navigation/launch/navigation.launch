@@ -1,0 +1,28 @@
+<launch>
+    <!--Parameters-->
+    <arg name="lidar_port" default="/dev/lidar"/>
+    <arg name="robot_port" default="/dev/create_base"/>
+    <arg name="map_file" default="/home/lili/map.yaml"/>
+    <arg name="initial_pose_x" default="0.0"/>
+    <arg name="initial_pose_y" default="0.0"/>
+    <arg name="initial_pose_a" default="0.0"/>
+
+    <!-- Map server Node-->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+    <!--AMCL Node-->
+    <include file="$(find lili_navigation)/launch/include/amcl.launch">
+        <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+        <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+        <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+    </include>
+
+    <!--Create Robot Node-->
+    <include file="$(find lili_bringup)/launch/robot_lidar.launch">
+        <arg name="robot_port" value="$(arg robot_port)" />
+        <arg name="lidar_port" value="$(arg lidar_port)" />
+    </include>
+
+    <!--move_base Node-->
+    <include file="$(find lili_navigation)/launch/include/move_base.launch" />
+</launch>

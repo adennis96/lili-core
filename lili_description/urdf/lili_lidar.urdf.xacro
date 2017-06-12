@@ -10,7 +10,7 @@
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
         <!-- dimensions for lidar are rough estimates -->
-        <cylinder length="0.005" radius="0.05" />
+        <cylinder length="0.02" radius="0.05" />
       </geometry>
     </visual>
   </link>

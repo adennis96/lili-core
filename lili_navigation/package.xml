@@ -13,5 +13,9 @@
   <run_depend>xv_11_laser_driver</run_depend>
   <run_depend>lili_bringup</run_depend>
   <run_depend>gmapping</run_depend>
+  <run_depend>amcl</run_depend>
+  <run_depend>move_base</run_depend>
+  <run_depend>dwa_local_planner</run_depend>
+  <run_depend>navfn</run_depend>
 
 </package>
