@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot name="lili" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find lili_description)/urdf/include/create.urdf.xacro"/>
+  <xacro:include filename="$(find lili_description)/urdf/include/asus_xtion_pro.urdf.xacro"/>
+
+  <create/>
+
+  <link name="stand">
+    <visual>
+      <origin xyz="0 0 -0.5" rpy="0 0 0" />
+      <geometry>
+        <box size="0.02 0.02 1" />
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="stand_joint" type="fixed">
+    <origin xyz="0 0 1" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="stand" />
+  </joint>
+
+  <sensor_asus_xtion_pro parent="stand"/>
+</robot>
