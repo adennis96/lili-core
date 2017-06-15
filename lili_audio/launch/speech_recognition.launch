@@ -1,0 +1,18 @@
+<launch>
+  <node pkg="audio_capture" type="audio_capture" name="audio_capture">
+    <param name="device" value="" />
+    <param name="format" value="wave" />
+    <param name="channels" value="1" />
+    <param name="depth" value="16" />
+    <param name="sample_rate" value="16000" />
+  </node>
+
+  <node pkg="lili_audio" type="speech_recog.py" name="speech_recog" output="screen">
+    <param name="audio_topic" value="audio" />
+    <param name="chunk" value="1024" />
+    <param name="depth" value="2" />
+    <param name="sample_rate" value="16000" />
+  </node>
+
+  <!--<node pkg="audio_play" type="audio_play" name="audio_play" /> -->
+</launch>
