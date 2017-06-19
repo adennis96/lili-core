@@ -13,6 +13,4 @@
     <param name="depth" value="2" />
     <param name="sample_rate" value="16000" />
   </node>
-
-  <!--<node pkg="audio_play" type="audio_play" name="audio_play" /> -->
 </launch>

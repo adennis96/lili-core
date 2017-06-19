@@ -1,0 +1,7 @@
+<launch>
+  <node pkg="lili_audio" type="text_to_speech.py" name="text_to_speech" output="screen" />
+
+  <node pkg="audio_play" type="audio_play" name="audio_play">
+    <param name="dst" value="alsasink" />
+  </node>
+</launch>
