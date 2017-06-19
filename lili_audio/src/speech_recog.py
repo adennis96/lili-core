@@ -55,11 +55,10 @@ def recognize_speech_handler(req):
     recog = sr.Recognizer()
     recog.pause_threshold = 1
 
-    audio_topic = rospy.get_param('~audio_topic', 'audio')
     chunk = rospy.get_param('~chunk', 1024)
     depth = rospy.get_param('~depth', 2)
     sample_rate = rospy.get_param('~sample_rate', 16000)
-    ros_source = ROSAudioSource(audio_topic, chunk, depth, sample_rate)
+    ros_source = ROSAudioSource('audio', chunk, depth, sample_rate)
 
     while text == None:
         # use ROS audio topic as the audio source

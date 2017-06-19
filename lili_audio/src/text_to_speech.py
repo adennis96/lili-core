@@ -16,12 +16,13 @@ class TTSServer:
     def __init__(self):
         self.pub = rospy.Publisher('audio', audio_common_msgs.msg.AudioData, queue_size=100)
         self.sub = rospy.Subscriber('speech', std_msgs.msg.String, self.speech_handler)
-        self.lang = 'en'
+        self.lang = rospy.get_param('~lang', 'en')
+        self.slow = rospy.get_param('~slow', False)
         self.stream = ROSSpeechStream(self.pub)
 
     def speech_handler(self, data):
         rospy.loginfo("TTS request: " + data.data)
-        tts = gTTS(text=data.data, lang=self.lang)
+        tts = gTTS(text=data.data, lang=self.lang, slow=self.slow)
         tts.write_to_fp(self.stream)
 
 def text_to_speech_server():
