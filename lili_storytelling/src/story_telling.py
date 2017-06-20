@@ -2,18 +2,21 @@
 
 import time
 import lili_audio.srv
-import std_msgs.msg
+import lili_audio.msg
+import actionlib
 import rospy
 
 class LILIAvatar:
     def __init__(self):
-        self.speech_pub = rospy.Publisher('speech', std_msgs.msg.String, queue_size=10)
+        self.speech_act = actionlib.SimpleActionClient('speech', lili_audio.msg.TTSAction)
         rospy.wait_for_service('recognize_speech')
         self.listen_serv = rospy.ServiceProxy('recognize_speech', lili_audio.srv.RecognizeSpeech)
 
-    def speak(self, text):
-        speech = std_msgs.msg.String(text)
-        self.speech_pub.publish(speech)
+    def speak(self, text, block=True):
+        goal = lili_audio.msg.TTSGoal(text)
+        self.speech_act.send_goal(goal)
+        if block:
+            self.speech_act.wait_for_result()
 
     def listen(self):
         resp = self.listen_serv(lili_audio.srv.RecognizeSpeechRequest())
