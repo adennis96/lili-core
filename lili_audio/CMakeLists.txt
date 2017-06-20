@@ -4,6 +4,7 @@ project(lili_audio)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   message_generation
+  actionlib_msgs
 )
 
 add_service_files(
@@ -11,10 +12,17 @@ add_service_files(
   FILES RecognizeSpeech.srv
 )
 
-generate_messages()
+add_action_files(
+  DIRECTORY action
+  FILES TTS.action
+)
+
+generate_messages(
+  DEPENDENCIES actionlib_msgs std_msgs
+)
 
 catkin_package(
-  CATKIN_DEPENDS message_runtime
+  CATKIN_DEPENDS message_runtime actionlib_msgs
 )
 
 include_directories(
