@@ -1,7 +1,13 @@
 <launch>
+  <arg name="fullscreen" default="true" />
+
   <include file="$(find lili_audio)/launch/speech_recognition.launch" />
 
   <include file="$(find lili_audio)/launch/text_to_speech.launch" />
 
   <node pkg="lili_storytelling" type="story_telling.py" name="story_telling" />
+
+  <include file="$(find lili_graphics)/launch/lili_graphics.launch">
+    <arg name="fullscreen" value="$(arg fullscreen)" />
+  </include>
 </launch>
