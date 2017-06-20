@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="lili_graphics" type="lili_graphics.py" name="lili_graphics" output="screen">
+    <param name='~image_path' value='/home/lmb420/Pictures/lilyResources/' />
+  </node>
+</launch>

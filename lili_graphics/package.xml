@@ -1,0 +1,18 @@
+<package>
+  <name>lili_graphics</name>
+  <version>0.0.0</version>
+  <description>
+  This packages contains graphics for the lili robot
+  </description>
+  <maintainer email="lmb420@lehigh.edu">lmb420</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+
+  <run_depend>rospy</run_depend>
+  <run_depend>std_msgs</run_depend>
+</package>
