@@ -1,0 +1,9 @@
+<launch>
+  <arg name="image_topic" default="/camera/rgb/image_raw"/>
+
+  <include file="$(find lili_bringup)/launch/include/3dsensor.launch" />
+
+  <node pkg="lili_vision" type="vision.py" name="vision" output="screen">
+    <remap from="image" to="$(arg image_topic)" />
+  </node>
+</launch>
