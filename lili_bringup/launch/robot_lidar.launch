@@ -5,14 +5,12 @@
 
   <!--Create Robot Node-->
   <include file="$(find lili_bringup)/launch/robot.launch">
-      <arg name="serialport" value="$(arg robot_port)"/>
-      <arg name="description_urdf" value="$(arg description_urdf)"/>
+    <arg name="serialport" value="$(arg robot_port)"/>
+    <arg name="description_urdf" value="$(arg description_urdf)"/>
   </include>
 
   <!--XV-11 LIDAR Node-->
-  <node pkg="xv_11_laser_driver" type="neato_laser_publisher" name="xv_11_lidar">
-      <param name="frame_id" value="laser"/>
-      <param name="firmware_version" value="2"/>
-      <param name="port" value="$(arg lidar_port)"/>
-  </node>
+  <include file="$(find lili_bringup)/launch/include/lidar.launch">
+    <arg name="lidar_port" value="$(arg lidar_port)" />
+  </include>
 </launch>

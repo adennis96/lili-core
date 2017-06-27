@@ -1,0 +1,9 @@
+<launch>
+  <arg name="lidar_port" default="/dev/lidar"/>
+
+  <node pkg="xv_11_laser_driver" type="neato_laser_publisher" name="xv_11_lidar">
+    <param name="frame_id" value="laser"/>
+    <param name="firmware_version" value="2"/>
+    <param name="port" value="$(arg lidar_port)"/>
+  </node>
+</launch>
