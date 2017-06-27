@@ -2,17 +2,13 @@
 
 import pyglet
 import std_msgs
-import gtk.gdk
 import rospy
-import sys
 
-class LilyAnimation(pyglet.window.Window):
-    def __init__(self, fullscreen = True):
-        pyglet.window.Window.__init__(self, fullscreen = fullscreen)
-        self.lily_sprite = None
-	self.image_path = rospy.get_param('~image_path', '/home/lmb420/Pictures/lilyResources/')
-
-	print "Window constructed. Reindexing image path."
+class LiliAnimation(pyglet.window.Window):
+    def __init__(self, fullscreen):
+        pyglet.window.Window.__init__(self, fullscreen=fullscreen)
+        self.image_path = rospy.get_param('~image_path')
+        self.default_image = rospy.get_param('~default_image')
 
         pyglet.resource.path = [self.image_path]
         pyglet.resource.reindex()
@@ -24,48 +20,43 @@ class LilyAnimation(pyglet.window.Window):
         self.background_color = 0.815, 0.87, 1, 1
         pyglet.gl.glClearColor(*self.background_color)
 
-	print "Calling init_lili."
+        self.sprite = None
+        self.change_sprite(self.default_image)
 
-        self.init_lili()
-
-	self.sub = rospy.Subscriber('display', std_msgs.msg.String, self.display_handler)
-
-    def init_lili(self):
-	try:
-            lily_idle = pyglet.resource.animation("lily_idle.gif")
-            print "Idle gif loaded."
-            self.lily_sprite = pyglet.sprite.Sprite(lily_idle)
-            self.lily_sprite.set_position((gtk.gdk.screen_width() - self.lily_sprite.width) / 2, (gtk.gdk.screen_height() - self.lily_sprite.height) / 2)
-            print "Sprite constucted"
-            self.on_draw()
-        except pyglet.resource.ResourceNotFoundException:
-            print "Invalid Resource Path! Exiting"
-            sys.exit(1)
+        self.sub = rospy.Subscriber('display', std_msgs.msg.String,
+            self.display_handler)
 
     def on_draw(self):
-        #print("Starting on_draw")
         self.clear()
-        self.lily_sprite.draw()
+        self.sprite.draw()
 
     def on_deactivate(self):
-        self.minimize()
+        if self.fullscreen:
+            self.minimize()
 
-    def display_handler(self, filename):
+    def display_handler(self, data):
+        pyglet.clock.schedule_once(lambda x: self.change_sprite(data.data), 0)
+
+    def change_sprite(self, filename):
         try:
-	    image = pyglet.resource.animation(self.image_path + filename)
-            self.lily_sprite.image = image
-            self.lily_sprite.set_position((gtk.gdk.screen_width() - self.lily_sprite.width) / 2, (gtk.gdk.screen_height() - self.lily_sprite.height) / 2)        
-	    self.on_draw()
-        except:
-            print "Invalid Resource Path! Exiting"
-            sys.exit(1)
+            image = pyglet.resource.animation(filename)
+        except pyglet.resource.ResourceNotFoundException:
+            rospy.logerr("invalid resource path: " + filename)
+        else:
+            rospy.loginfo("image loaded: " + filename)
+            if self.sprite == None:
+                self.sprite = pyglet.sprite.Sprite(image)
+            else:
+                self.sprite.image = image
+            sprite_x = (self.width - self.sprite.width) / 2
+            sprite_y = (self.height - self.sprite.height) / 2
+            self.sprite.set_position(sprite_x, sprite_y)
 
 def animation_server():
     rospy.init_node('lili_graphics')
-    print "Constructing LilyAnimation object."
-    window = LilyAnimation()
+    fullscreen = rospy.get_param('~fullscreen', True)
+    window = LiliAnimation(fullscreen)
     pyglet.app.run()
-    rospy.spin()
 
 if __name__ == '__main__':
     animation_server();

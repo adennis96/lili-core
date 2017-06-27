@@ -11,5 +11,6 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <run_depend>lili_audio</run_depend>
+  <run_depend>lili_graphics</run_depend>
 
 </package>
