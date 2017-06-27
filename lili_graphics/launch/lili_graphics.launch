@@ -1,5 +1,11 @@
 <launch>
+  <arg name="image_path" default="$(find lili_graphics)/images/" />
+  <arg name="default_image" default="lili_idle.gif" />
+  <arg name="fullscreen" default="true" />
+
   <node pkg="lili_graphics" type="lili_graphics.py" name="lili_graphics" output="screen">
-    <param name='~image_path' value='/home/lmb420/Pictures/lilyResources/' />
+    <param name="~image_path" value="$(arg image_path)" />
+    <param name="~default_image" value="$(arg default_image)" />
+    <param name="~fullscreen" value="$(arg fullscreen)" />
   </node>
 </launch>
