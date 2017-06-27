@@ -3,6 +3,7 @@
 import time
 import lili_audio.srv
 import lili_audio.msg
+from std_msgs.msg import String
 import actionlib
 import rospy
 
@@ -11,6 +12,7 @@ class LILIAvatar:
         self.speech_act = actionlib.SimpleActionClient('speech', lili_audio.msg.TTSAction)
         rospy.wait_for_service('recognize_speech')
         self.listen_serv = rospy.ServiceProxy('recognize_speech', lili_audio.srv.RecognizeSpeech)
+        self.display_pub = rospy.Publisher('display', String, queue_size = 10)
 
     def speak(self, text, block=True):
         goal = lili_audio.msg.TTSGoal(text)
@@ -21,6 +23,7 @@ class LILIAvatar:
     def listen(self):
         resp = self.listen_serv(lili_audio.srv.RecognizeSpeechRequest())
         return resp.speech
+
 
 def test():
     rospy.init_node('story_telling')
