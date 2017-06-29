@@ -39,9 +39,14 @@ class LiliAnimation(pyglet.window.Window):
 
     def change_sprite(self, filename):
         try:
-            image = pyglet.resource.animation(filename)
+            if filename[-4:] == '.gif':
+                image = pyglet.resource.animation(filename)
+            else:
+                image = pyglet.image.load(filename, file=pyglet.resource.file(filename))
         except pyglet.resource.ResourceNotFoundException:
             rospy.logerr("invalid resource path: " + filename)
+        except pyglet.image.codecs.ImageDecodeException:
+            rospy.logerr("failed to decode image: " + filename)
         else:
             rospy.loginfo("image loaded: " + filename)
             if self.sprite == None:
