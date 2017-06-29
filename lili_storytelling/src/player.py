@@ -7,10 +7,10 @@ class Player:
     in the traversal of the story graph.
     '''
 
-    def __init__(self, root, list_of_StoryNodes, name = "John Doe"):
+    def __init__(self, root, list_of_StoryNodes, name="John Doe"):
 
         #! Represents the player's location. Initialized at the root
-        self.location = root 
+        self.location = root
 
         #! Dictionary containing the traversal status of each node (completed or not)
         self.completed = {}
@@ -32,4 +32,3 @@ class Player:
             yes = getInputString(yes_syns[0])
         return s
     '''
-    

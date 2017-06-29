@@ -18,7 +18,7 @@ import time
 
 from avatar_class import LilyAnimation
 
-#all story titles must be one word
+# all story titles must be one word
 
 story_dict = {}
 story_dict["Movie"] = movie_story.movie_story_line
@@ -37,8 +37,8 @@ def getStory():
         speak(story)
     while True:
         s = getInputString(story_dict.keys())
-	if s is None:
-		return
+        if s is None:
+            return
         story = get_target(s, story_dict.keys(), targets_syn)
         while story == None:
             speak("Sorry, we don't have that story right now.")
@@ -51,42 +51,44 @@ def getStory():
             return None
         return story_dict[story]
 
-def get_target(s, targets, targets_syn):        #this method looks for a one word target in user's speech
-	#check if user says exactly the node's name
-	if "quit" in s.lower().split():
-		return "quit"
-	for t in targets:
-		if s.lower() == t.lower():
-			return t
-	
-	s = s.lower().split()
-	temp = []
-	for i in s:
-		temp.append(stemmer.stem(i))
-	s = temp
-	for t in targets_syn:
-		for word in s:
-			if word == t:
-				return targets[targets_syn.index(t)]
-		
-	return None
 
-   
+# this method looks for a one word target in user's speech
+def get_target(s, targets, targets_syn):
+        # check if user says exactly the node's name
+    if "quit" in s.lower().split():
+        return "quit"
+    for t in targets:
+        if s.lower() == t.lower():
+            return t
+
+    s = s.lower().split()
+    temp = []
+    for i in s:
+        temp.append(stemmer.stem(i))
+    s = temp
+    for t in targets_syn:
+        for word in s:
+            if word == t:
+                return targets[targets_syn.index(t)]
+
+    return None
+
+
 def runStory():
-        #play avatar
-    t = threading.Thread(target = avatar_player.run_avatar)
+    # play avatar
+    t = threading.Thread(target=avatar_player.run_avatar)
     t.daemon = True
     t.start()
     time.sleep(2)
 
-    #create story from nodes and player 
+    # create story from nodes and player
     story_line = getStory()
     if story_line == None:
         return
-	player = Player(story_line)
-	story = Story(player, story_line) 
-	#run through the story
-	story.walk(player)
+        player = Player(story_line)
+        story = Story(player, story_line)
+        # run through the story
+        story.walk(player)
 
 
 runStory()
