@@ -5,6 +5,7 @@ import lili_audio.msg
 from std_msgs.msg import String
 import actionlib
 import rospy
+import dialog
 
 class LILIAvatar:
     '''
@@ -23,19 +24,30 @@ class LILIAvatar:
         self.display_pub = rospy.Publisher('display', std_msgs.msg.String,
                                            queue_size=10)
 
-    def speak(self, text, block=True, display_lili=True):
+    def speak(self, dialog, block=True, display_lili=True):
         '''
-        This method takes a string text and sends it to the text to speech node.
+        This method takes a dialog object or string text and sends it to the text to speech node.
         It has two optional bool args block and display_lili. Block determines if the
         method waits for the speech to finish before moving on. Display_lili determines
         if the method displays Lili talking on screen.
         '''
         if block and display_lili:
             self.display_pub.publish(std_msgs.msg.String('lili_talking.gif'))
-        goal = lili_audio.msg.TTSGoal(text)
-        self.speech_act.send_goal(goal)
-        if block:
-            self.speech_act.wait_for_result()
+
+        try:
+            textToSay = dialog.text
+        except AttributeError: #if dialog is a string rather than dialog object
+            textToSay = dialog
+
+        if textToSay is not None:
+            goal = lili_audio.msg.TTSGoal(textToSay)
+
+            self.speech_act.send_goal(goal)
+
+            if block:
+                self.speech_act.wait_for_result()
+
+        # TODO Implement playing from a file. (using dialog.filepath)
 
             # Broken when block is False. Can't properly shut off Lili animation if
             # the method doesn't wait for speaking to finish

@@ -13,11 +13,8 @@ class StoryEdge:
         #: Key represents the string the player will say to take the node (irrelivant if auto is True in parent node)
         self.key = str(key)
 
-        #: Dialog represents the string the player will be read when they traverse this edge
-        if dialog is not None:
-            self.dialog = str(dialog)
-        else:
-            self.dialog = None
+        #: A Dialog object that represents the text/sounds that will be played when the player traverses this node
+        self.dialog = dialog
 
         self.child = child  # : Child node of this edge
 

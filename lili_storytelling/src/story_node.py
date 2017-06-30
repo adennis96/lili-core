@@ -9,24 +9,21 @@ class StoryNode:
     and child story edges, which represent player interactions.
     '''
 
-    def __init__(self, name, description=None, dialog=None,
+    def __init__(self, name, dialogs = [], description=None,
                  children=None, image_path=None, auto=False):
 
         if name is not None:
-            self.name = str(name)  # : This is a unique name for the node
+            self.name = str(name)  #: This is a unique name for the node
         else:
             self.name = None
         
         if description is not None:
-            self.description = str(description)  # ! Description for dev purposes
+            self.description = str(description)  #: Description for dev purposes
         else:
             self.description = None
 
-        if description is not None:
-            #: The text to be read to the player upon reaching this node
-            self.dialog = str(dialog)
-        else:
-            self.dialog = None
+        #: A list of Dialog objects containing text and associated characters
+        self.dialogs = dialogs
 
         #: Children StoryEdges to this node representing player options, i.e. edges in graph
         self.children = []
@@ -40,9 +37,9 @@ class StoryNode:
                         "Invalid Child passed to StoryNode initializer!")
 
         # Add additional activities to the node
-        # : Image Path specifies the path to the image that should be displayed
+        #: Image Path specifies the path to the image that should be displayed
         self.image_path = image_path
-        self.auto = auto  # : Specifies whether the next edge should be taken automatically
+        self.auto = auto  #: Specifies whether the next edge should be taken automatically
 
         # self.task # currently unimplemented prerequisite system
 
@@ -69,7 +66,7 @@ class StoryNode:
             return self.children[0]
 
         total = self.totalWeight()
-        utility_funcs.eprint(str(total) + " is the total weight for this branch.s")
+        utility_funcs.eprint(str(total) + " is the total weight for this branch.")
 
         # If children has multiple member all with weight 0
         if total is 0:
@@ -98,8 +95,9 @@ class StoryNode:
         else:
             lili.display()
 
-        if self.dialog is not None:
-            lili.speak(self.dialog, block=True, display_lili=self.image_path is None)
+        for dialog in self.dialogs:
+            # TODO add support for multiple characters using dialog.characterID
+            lili.speak(dialog, block=True, display_lili=self.image_path is None)
 
         return self
 

@@ -14,13 +14,15 @@ class Story(object):
     reaches one of the end nodes.
     """
 
-    def __init__(self, player, root, endings):
+    def __init__(self, player, root, endings, character_count=1):
         #: The player instance that will walk through the story
         self.player = player
         #: The root node of the story, i.e the starting node
         self.root = root
         #: A list of ending nodes for the story
         self.endings = endings
+        #: The number of different characters in the story (not currently used)
+        self.character_count = character_count
 
     def getNextNode(self, current, speech):
         '''

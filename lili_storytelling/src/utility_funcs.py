@@ -6,11 +6,11 @@ from nltk.stem.snowball import SnowballStemmer
 stemmer = SnowballStemmer('english')
 
 
-def eprint(*args):
+def eprint(msg, *args):
     '''
     Prints to stderr
     '''
-    rospy.loginfo(*args)
+    rospy.loginfo(msg, *args)
 
 
 def get_target(self, s, targets, targets_syn=None):
