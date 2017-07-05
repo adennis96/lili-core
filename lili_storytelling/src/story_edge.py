@@ -16,7 +16,7 @@ class StoryEdge:
         #: A Dialog object that represents the text/sounds that will be played when the player traverses this node
         self.dialog = dialog
 
-        self.child = child  # : Child node of this edge
+        self.child = child  #: Child node of this edge
 
         #: Weight represents the relative probablilty of this edge occuring if auto is set in the parent node
         self.weight = weight
@@ -32,3 +32,4 @@ class StoryEdge:
             lili.speak(self.dialog, block=True, display_lili=display_lili)
 
         return self.child
+        

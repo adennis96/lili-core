@@ -12,5 +12,6 @@
 
   <run_depend>lili_audio</run_depend>
   <run_depend>lili_graphics</run_depend>
+  <run_depend>sound_play</run_depend>
 
 </package>

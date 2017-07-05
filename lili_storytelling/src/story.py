@@ -14,13 +14,11 @@ class Story(object):
     reaches one of the end nodes.
     """
 
-    def __init__(self, player, root, endings, character_count=1):
+    def __init__(self, player, root, character_count=1):
         #: The player instance that will walk through the story
         self.player = player
         #: The root node of the story, i.e the starting node
-        self.root = root
-        #: A list of ending nodes for the story
-        self.endings = endings
+        self.root = root    
         #: The number of different characters in the story (not currently used)
         self.character_count = character_count
 
@@ -119,7 +117,7 @@ class Story(object):
         player.location.playNode(lili)
         player.completed[player.location.name] = True
 
-        while player.location not in self.endings:
+        while player.location.name is not None:
             player.location = self.nextNode(player, lili)
             player.location.playNode(lili)
             player.completed[player.location.name] = True
@@ -133,9 +131,14 @@ class Story(object):
         for i in range(len(current.children)):
             child = current.children[i]
 
-            if i == len(current.children) - 1:
+            if (i == len(current.children) - 1) and len(current.children) > 1:
                 retval += 'or '
-            retval += child.key + ' '
+            retval += child.key
+
+            if i != len(current.children) - 1:
+                retval += ', '
+            else:
+                retval += '.'
 
         return retval
 

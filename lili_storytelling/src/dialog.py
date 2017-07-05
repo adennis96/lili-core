@@ -8,8 +8,9 @@ class Dialog:
 
     def __init__(self, characterID=0, text=None, filepath=None):
 
-        self.characterID = characterID
+        #self.characterID = characterID
 
+        # if text and filepath are both given, defaults to filepath, discards text
         if text is not None and filepath is not None:
             self.text = None
             self.filepath = filepath
@@ -18,6 +19,7 @@ class Dialog:
             self.text = text
             self.filepath = None
 
+        # if both are None, then both will be set to Nonegit
         else:
             self.filepath = filepath
             self.text = None

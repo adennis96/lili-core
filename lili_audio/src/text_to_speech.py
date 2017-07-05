@@ -31,7 +31,8 @@ class ROSSpeechStream:
 
 class TTSServer:
     def __init__(self):
-        # ros topics
+
+        # ros topics        
         self.pub = rospy.Publisher('audio', audio_common_msgs.msg.AudioData,
             queue_size=10)
         self.act = actionlib.SimpleActionServer('speech',
@@ -45,6 +46,7 @@ class TTSServer:
         self.bitrate = rospy.get_param('~bitrate', 32000) # default for gTTS
 
     def speech_handler(self, goal):
+
         rospy.loginfo("TTS request: " + goal.speech)
 
         # generate audio and stream out

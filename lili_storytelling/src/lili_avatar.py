@@ -7,6 +7,9 @@ import actionlib
 import rospy
 import dialog
 
+from sound_play.msg import SoundRequest
+from sound_play.libsoundplay import SoundClient
+
 class LILIAvatar:
     '''
     This class represents the storytelling code's interface with the other nodes
@@ -24,6 +27,11 @@ class LILIAvatar:
         self.display_pub = rospy.Publisher('display', std_msgs.msg.String,
                                            queue_size=10)
 
+        self.sound_path = rospy.get_param('~sound_path')
+
+        #: sound_play node for playing audio files
+        self.soundhandle = SoundClient(blocking = True)
+
     def speak(self, dialog, block=True, display_lili=True):
         '''
         This method takes a dialog object or string text and sends it to the text to speech node.
@@ -39,7 +47,9 @@ class LILIAvatar:
         except AttributeError: #if dialog is a string rather than dialog object
             textToSay = dialog
 
+        # If both text and filepath are None, nothing will be said.
         if textToSay is not None:
+
             goal = lili_audio.msg.TTSGoal(textToSay)
 
             self.speech_act.send_goal(goal)
@@ -47,10 +57,12 @@ class LILIAvatar:
             if block:
                 self.speech_act.wait_for_result()
 
-        # TODO Implement playing from a file. (using dialog.filepath)
+        elif dialog.filepath is not None:
+            rospy.loginfo("Sound play request: " + dialog.filepath)
+            self.soundhandle.playWave(self.sound_path + dialog.filepath)
 
-            # Broken when block is False. Can't properly shut off Lili animation if
-            # the method doesn't wait for speaking to finish
+        # Broken when block is False. Can't properly shut off Lili animation if
+        # the method doesn't wait for speaking to finish
         if display_lili:
             self.display_pub.publish(std_msgs.msg.String('lili_idle.gif'))
 

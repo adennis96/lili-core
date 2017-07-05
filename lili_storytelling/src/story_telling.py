@@ -18,9 +18,9 @@ def test():
 
     player = Player(test_story.zoo_start, test_story.zoo_nodes, name)
 
-    avatar.speak('Hi ' + name + ', nice to meet you.')
+    #avatar.speak('Hi ' + name + ', nice to meet you.')
 
-    zoo_story = Story(player, test_story.zoo_start, test_story.zoo_ends)
+    zoo_story = Story(player, test_story.zoo_start)
     
     f = open('pickleTest', 'w')
     pickle.dump(zoo_story, f)
