@@ -14,8 +14,7 @@ from dialog import Dialog
 
 ### Entrance ###
 entrance_text = ('Hello, welcome to the San Diego Zoo! '
-                 'We have a bunch of great exhibits for you today. '
-                 'Say the name of the animal you want to see to go there.')
+                 'We have a bunch of great exhibits for you today.')
 
 entrance_dialog = [Dialog(text=entrance_text)]
 
@@ -93,8 +92,7 @@ lion_edge = StoryEdge('go to the lions', lion_node,
 
 
 ### Elephant ###
-elephant_node_dialog = [Dialog(text='Elephants are my favorite!'),
-                        Dialog(text='The elephant says Hi...'),
+elephant_node_dialog = [Dialog(text='Elephants are my favorite! The elephant says Hi.'),
                         Dialog(filepath='elephant.wav')]
 
 elephant_node = StoryNode('elephant', elephant_node_dialog, 'Node representing the elephant exhibit.',
@@ -104,7 +102,7 @@ elephant_edge = StoryEdge('go to the elephants', elephant_node,
                             dialog='You walk over to the elephant exhibit.')
 
 
-### Elephant Painting
+### Elephant Painting ###
 elephant_painting_dialog = [Dialog(text='Look at the beautiful painting!')]
 
 elephant_painting_node = StoryNode('elephant_painting', elephant_painting_dialog, 'Node with elephant painting', 
@@ -117,6 +115,29 @@ post_elephant_node = StoryNode('post_elephant', image_path='elephant.gif')
 
 post_elephant_edge = StoryEdge('done at the elephants', post_elephant_node, weight=1)
 
+
+### Tiger Node ###
+tiger_node_dialog = [Dialog(text='Look at that bird flying into the tiger enclosure.')]
+
+tiger_node = StoryNode('tiger', tiger_node_dialog, 'Node representing the tiger exhibit.',
+                        image_path='tiger_and_bird.gif', auto=True)
+
+tiger_edge = StoryEdge('go to the tigers', tiger_node,
+                        dialog='You walk over to the tiger exhibit.')
+
+
+### Tiger Babies ##
+tiger_baby_node_dialog = [Dialog(text='Look at the cute baby tigers!')]
+
+tiger_baby_node = StoryNode('tiger_babies', tiger_baby_node_dialog, 'Node representing the baby tigers.',
+                            image_path='baby_tiger.gif', auto=True)
+
+tiger_baby_edge = StoryEdge('baby tigers arrive', tiger_baby_node, 
+                            dialog='How lucky! The baby tigers are here too!', weight=2)
+
+post_tiger_node = StoryNode('post_tiger', image_path='tiger_and_bird.gif')
+
+post_tiger_edge = StoryEdge('done at the tigers', post_tiger_node, weight=1)
 
 
 ### Exit ###
@@ -137,23 +158,27 @@ exit_edge = StoryEdge('leave the zoo', exit_node,
 # For the Story construction:
 zoo_nodes = [entrance, monkey_node, lion_node, penguin_node, funnel_node,
               penguin_feeding_node, exit_node, post_penguin_node, elephant_node]
-zoo_start = lion_node
+zoo_start = entrance
 
 
 # Story Structure:
 
-entrance.children = [monkey_edge, penguin_edge, lion_edge, elephant_edge]
+entrance.children = [monkey_edge, penguin_edge, lion_edge, tiger_edge, elephant_edge]
 
-monkey_node.children = [penguin_edge, lion_edge, elephant_edge, funnel_edge, exit_edge]
+monkey_node.children = [penguin_edge, lion_edge, elephant_edge, tiger_edge, funnel_edge, exit_edge]
 
-funnel_node.children = [lion_edge, penguin_edge, elephant_edge, exit_edge]
+funnel_node.children = [lion_edge, penguin_edge, elephant_edge, tiger_edge, exit_edge]
 
-post_penguin_node.children = [monkey_edge, lion_edge, elephant_edge, exit_edge]
+post_penguin_node.children = [monkey_edge, lion_edge, elephant_edge, tiger_edge, exit_edge]
 penguin_node.children = [penguin_feeding_edge, post_penguin_edge]
 penguin_feeding_node.children = [post_penguin_edge]
 
-lion_node.children = [monkey_edge, penguin_edge, elephant_edge, exit_edge]
+lion_node.children = [monkey_edge, penguin_edge, elephant_edge, tiger_edge, exit_edge]
 
-post_elephant_node.children = [penguin_edge, lion_edge, monkey_edge, exit_edge]
+post_elephant_node.children = [penguin_edge, lion_edge, monkey_edge, tiger_edge, exit_edge]
 elephant_node.children = [elephant_painting_edge, post_elephant_edge]
-elephant_painting_node.children = [post_elephant_node]
+elephant_painting_node.children = [post_elephant_edge]
+
+post_tiger_node.children = [monkey_edge, lion_edge, elephant_edge, penguin_edge, exit_edge]
+tiger_node.children = [post_tiger_edge, tiger_baby_edge]
+tiger_baby_node.children = [post_tiger_edge]

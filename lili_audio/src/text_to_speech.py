@@ -41,7 +41,7 @@ class TTSServer:
         self.act.start()
 
         # ros parameters
-        self.lang = rospy.get_param('~lang', 'en')
+        self.lang = rospy.get_param('~lang', 'en-us')
         self.slow = rospy.get_param('~slow', False)
         self.bitrate = rospy.get_param('~bitrate', 32000) # default for gTTS
 
