@@ -66,7 +66,6 @@ class StoryNode:
             return self.children[0]
 
         total = self.totalWeight()
-        utility_funcs.eprint(str(total) + " is the total weight for this branch.")
 
         # If children has multiple member all with weight 0
         if total is 0:

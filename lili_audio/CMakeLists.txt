@@ -5,6 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   message_generation
   actionlib_msgs
+  actionlib
 )
 
 add_service_files(

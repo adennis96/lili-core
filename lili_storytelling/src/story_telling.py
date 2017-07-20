@@ -4,6 +4,7 @@ import time
 import rospy
 import test_story
 import pickle
+from dialog import Dialog
 from player import Player
 from story import Story
 from lili_avatar import LILIAvatar

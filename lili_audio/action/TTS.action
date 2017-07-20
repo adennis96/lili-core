@@ -1,3 +1,5 @@
 string speech
+string filepath
+string voice
 ---
 ---

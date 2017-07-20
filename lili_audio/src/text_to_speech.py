@@ -2,12 +2,17 @@
 
 from Queue import Queue
 from gtts import gTTS
-import audio_common_msgs.msg
 import lili_audio.msg
 import actionlib
 import rospy
+import audio_common_msgs.msg
 
-class ROSSpeechStream:
+
+from sound_play.msg import SoundRequest
+from sound_play.libsoundplay import SoundClient
+
+
+class ROSSpeechStream:       # PRETTY SURE THIS IS ALL NOT NEEDED
     def __init__(self, bitrate):
         self.bitrate = bitrate
         self.queue = Queue()
@@ -29,6 +34,7 @@ class ROSSpeechStream:
             pub.publish(audio_common_msgs.msg.AudioData(audio_snippet))
             rate.sleep()
 
+
 class TTSServer:
     def __init__(self):
 
@@ -39,6 +45,11 @@ class TTSServer:
             lili_audio.msg.TTSAction, execute_cb=self.speech_handler,
             auto_start=False)
         self.act.start()
+        
+        self.sound_path = rospy.get_param('~sound_path')
+
+        #: sound_play node for playing audio files
+        self.soundhandle = SoundClient(blocking = True)
 
         # ros parameters
         self.lang = rospy.get_param('~lang', 'en-us')
@@ -47,13 +58,21 @@ class TTSServer:
 
     def speech_handler(self, goal):
 
-        rospy.loginfo("TTS request: " + goal.speech)
+        if not (goal.speech == ''):
+            rospy.loginfo("TTS request: " + goal.speech)
 
-        # generate audio and stream out
-        stream = ROSSpeechStream(self.bitrate)
-        tts = gTTS(text=goal.speech, lang=self.lang, slow=self.slow)
-        tts.write_to_fp(stream)
-        stream.publish(self.pub)
+            if goal.voice == '': # i.e. use google text to speech
+                stream = ROSSpeechStream(self.bitrate)
+                tts = gTTS(text=goal.speech, lang=self.lang, slow=self.slow) # gTTS saves to .mp3 files, sound_play plays .ogg and .wav
+                tts.write_to_fp(stream)
+                stream.publish(self.pub)
+
+            else: 
+                self.soundhandle.say(goal.speech, goal.voice)
+        
+        elif not (goal.filepath == ''):
+            rospy.loginfo("Sound play request: " + goal.filepath)
+            self.soundhandle.playWave(self.sound_path + goal.filepath)
 
         self.act.set_succeeded(lili_audio.msg.TTSResult())
 

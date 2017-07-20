@@ -1,19 +1,14 @@
 <launch>
   <arg name="fullscreen" default="true" />
-  <arg name="sound_path" default="$(find lili_storytelling)/sounds/" />
 
   <include file="$(find lili_audio)/launch/speech_recognition.launch" />
 
   <include file="$(find lili_audio)/launch/text_to_speech.launch" />
 
-  <node pkg="lili_storytelling" type="story_telling.py" name="story_telling" output="screen">
-    <param name="~sound_path" value="$(arg sound_path)" />
-  </node>
+  <node pkg="lili_storytelling" type="story_telling.py" name="story_telling" output="screen" />
 
   <include file="$(find lili_graphics)/launch/lili_graphics.launch">
     <arg name="fullscreen" value="$(arg fullscreen)" />
   </include>
-
-  <node pkg="sound_play" type="soundplay_node.py" name="sound_play" />
 
 </launch>

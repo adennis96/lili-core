@@ -7,8 +7,6 @@ import actionlib
 import rospy
 import dialog
 
-from sound_play.msg import SoundRequest
-from sound_play.libsoundplay import SoundClient
 
 class LILIAvatar:
     '''
@@ -27,10 +25,6 @@ class LILIAvatar:
         self.display_pub = rospy.Publisher('display', std_msgs.msg.String,
                                            queue_size=10)
 
-        self.sound_path = rospy.get_param('~sound_path')
-
-        #: sound_play node for playing audio files
-        self.soundhandle = SoundClient(blocking = True)
 
     def speak(self, dialog, block=True, display_lili=True):
         '''
@@ -44,22 +38,43 @@ class LILIAvatar:
 
         try:
             textToSay = dialog.text
+            goal = lili_audio.msg.TTSGoal()
+            
+            # ROS's actionlib won't take None in a message
+            # So I converted all Nones to empty strings. Messy, but functional
+
+            if textToSay is None:
+                goal.speech = ''
+            else:
+                goal.speech = textToSay
+
+            if dialog.filepath is None:
+                goal.filepath = ''
+            else:
+                goal.filepath = dialog.filepath
+            
+            if dialog.voiceName is None:
+                goal.voice = ''
+            else:
+                goal.voice = dialog.voiceName
+
         except AttributeError: #if dialog is a string rather than dialog object
             textToSay = dialog
+            goal = lili_audio.msg.TTSGoal()
+            
+            if textToSay is None:
+                goal.speech = ''
+            else:
+                goal.speech = textToSay
 
-        # If both text and filepath are None, nothing will be said.
-        if textToSay is not None:
+            goal.filepath = ''
+            goal.voice = ''
+        
 
-            goal = lili_audio.msg.TTSGoal(textToSay)
+        self.speech_act.send_goal(goal)
 
-            self.speech_act.send_goal(goal)
-
-            if block:
-                self.speech_act.wait_for_result()
-
-        elif dialog.filepath is not None:
-            rospy.loginfo("Sound play request: " + dialog.filepath)
-            self.soundhandle.playWave(self.sound_path + dialog.filepath)
+        if block:
+            self.speech_act.wait_for_result()
 
         # Broken when block is False. Can't properly shut off Lili animation if
         # the method doesn't wait for speaking to finish

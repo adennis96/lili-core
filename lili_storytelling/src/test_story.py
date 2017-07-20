@@ -11,12 +11,13 @@ from dialog import Dialog
 
 # Dialog(self, characterID=0, text=None, filepath=None)
 
+Dialog.characterList = [None, "us2_mbrola"]
 
 ### Entrance ###
-entrance_text = ('Hello, welcome to the San Diego Zoo! '
-                 'We have a bunch of great exhibits for you today.')
+entrance_text = ('Hello, welcome to the San Diego Zoo! I will be your tour guide today. '
+                 'We have a bunch of great exhibits for you!')
 
-entrance_dialog = [Dialog(text=entrance_text)]
+entrance_dialog = [Dialog(text=entrance_text, characterID=1)]
 
 entrance = StoryNode('entrance', entrance_dialog, 'Node representing the entrance to the zoo.',
                      image_path='sanDiegoZoo.jpg')
@@ -28,7 +29,7 @@ monkey_edge_text = ('You walk to the monkey enclosure. As you get close you pass
 
 monkey_edge_dialog = Dialog(text=monkey_edge_text)
 
-monkey_node_dialog = [Dialog(text='Look at the monkeys!')]
+monkey_node_dialog = [Dialog(text='Look at the monkeys!', characterID=1)]
 
 monkey_node = StoryNode('monkey', monkey_node_dialog, 'Node representing the monkey exhibit.',
                         image_path='monkey.gif')
@@ -54,7 +55,7 @@ funnel_edge = StoryEdge('buy a funnel cake', funnel_node,
 ### Penguins ###
 penguin_edge_dialog = Dialog(text='You walk over to the penguin enclosure.')
 
-penguin_node_dialog = [Dialog(text='Look at the cute penguins!')]
+penguin_node_dialog = [Dialog(text='Look at the cute penguins!', characterID=1)]
 
 penguin_node = StoryNode('penguin', penguin_node_dialog, 'Node representing the penguin exhibit.',
                          auto=True, image_path='penguin.gif')
@@ -64,12 +65,13 @@ penguin_edge = StoryEdge('go to the penguins', penguin_node,
 
 
 ### Penguin Feeding ###
-penguin_feeding_dialog = [Dialog(text="Let's stay and watch!")]
+penguin_feeding_dialog = [Dialog(text="Let's stay and watch!", characterID=1)]
 
 penguin_feeding_node = StoryNode('penguin_feeding', penguin_feeding_dialog,
                                  image_path='penguin_feeding.gif', auto=True)
 
-penguin_feeding_edge = StoryEdge('watch the penguins get fed', dialog='Great Timing! They are feeding the penguins!',
+penguin_feeding_edge = StoryEdge('watch the penguins get fed', 
+                                 dialog=Dialog(text='Great Timing! They are feeding the penguins!', characterID=1),
                                  child=penguin_feeding_node, weight=1)
 
 post_penguin_node = StoryNode('post_penguin', image_path='penguin.gif')
@@ -81,7 +83,7 @@ post_penguin_edge = StoryEdge(
 ### Lions ###
 lion_edge_dialog = Dialog(text='You walk over to the lion enclosure.')
 
-lion_node_dialog = [Dialog(text='That lion must be hungry!'), Dialog(text='Listen to it roar!'),
+lion_node_dialog = [Dialog(text='That lion must be hungry!', characterID=1), Dialog(text='Listen to it roar!', characterID=1),
                     Dialog(filepath='lion.wav')]
 
 lion_node = StoryNode('lion', lion_node_dialog, 'Node representing the lion exhibit.',
@@ -92,7 +94,7 @@ lion_edge = StoryEdge('go to the lions', lion_node,
 
 
 ### Elephant ###
-elephant_node_dialog = [Dialog(text='Elephants are my favorite! The elephant says Hi.'),
+elephant_node_dialog = [Dialog(text='Elephants are my favorite! The elephant says Hi.', characterID=1),
                         Dialog(filepath='elephant.wav')]
 
 elephant_node = StoryNode('elephant', elephant_node_dialog, 'Node representing the elephant exhibit.',
@@ -103,13 +105,13 @@ elephant_edge = StoryEdge('go to the elephants', elephant_node,
 
 
 ### Elephant Painting ###
-elephant_painting_dialog = [Dialog(text='Look at the beautiful painting!')]
+elephant_painting_dialog = [Dialog(text='Look at the beautiful painting!', characterID=1)]
 
 elephant_painting_node = StoryNode('elephant_painting', elephant_painting_dialog, 'Node with elephant painting', 
                             image_path='elephant_painting.gif', auto=True)
 
 elephant_painting_edge = StoryEdge('elephant painting', elephant_painting_node, 
-                            dialog='How lucky! One of the elephants is going to paint for us!', weight=2)
+                            dialog=Dialog(text='How lucky! One of the elephants is going to paint for us!', characterID=1), weight=2)
 
 post_elephant_node = StoryNode('post_elephant', image_path='elephant.gif')
 
@@ -117,7 +119,7 @@ post_elephant_edge = StoryEdge('done at the elephants', post_elephant_node, weig
 
 
 ### Tiger Node ###
-tiger_node_dialog = [Dialog(text='Look at that bird flying into the tiger enclosure.')]
+tiger_node_dialog = [Dialog(text='Look at that bird flying into the tiger enclosure.', characterID=1)]
 
 tiger_node = StoryNode('tiger', tiger_node_dialog, 'Node representing the tiger exhibit.',
                         image_path='tiger_and_bird.gif', auto=True)
@@ -127,13 +129,13 @@ tiger_edge = StoryEdge('go to the tigers', tiger_node,
 
 
 ### Tiger Babies ##
-tiger_baby_node_dialog = [Dialog(text='Look at the cute baby tigers!')]
+tiger_baby_node_dialog = [Dialog(text='Look at the cute baby tigers!', characterID=1)]
 
 tiger_baby_node = StoryNode('tiger_babies', tiger_baby_node_dialog, 'Node representing the baby tigers.',
                             image_path='baby_tiger.gif', auto=True)
 
 tiger_baby_edge = StoryEdge('baby tigers arrive', tiger_baby_node, 
-                            dialog='How lucky! The baby tigers are here too!', weight=2)
+                            dialog=Dialog(text='How lucky! The baby tigers are here too!', characterID=1), weight=2)
 
 post_tiger_node = StoryNode('post_tiger', image_path='tiger_and_bird.gif')
 
@@ -146,7 +148,7 @@ exit_edge_dialog = Dialog(text='You leave the exhibits and walk back toward the 
 exit_node_text = ('We hope you enjoyed your visit to the San Diego Zoo! '
                   'Come again soon.')
 
-exit_node_dialog = [Dialog(text=exit_node_text)]
+exit_node_dialog = [Dialog(text=exit_node_text, characterID=1)]
 
 exit_node = StoryNode(None, exit_node_dialog,
                       'Node representing exiting the zoo.')

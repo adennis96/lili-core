@@ -1,3 +1,6 @@
+import rospy
+
+characterList = [None, "voice_cmu_us_bdl_arctic_clunits", "voice_cmu_us_clb_arctic_clunits", "voice_cmu_us_rms_arctic_clunits", "voice_cmu_us_slt_arctic_clunits"]
 
 class Dialog:
     '''
@@ -8,7 +11,13 @@ class Dialog:
 
     def __init__(self, characterID=0, text=None, filepath=None):
 
-        #self.characterID = characterID
+        try:
+            #: A string representing the festival voice that will be used to read the text
+            rospy.loginfo("Creating Dialog object")
+            self.voiceName = characterList[characterID]
+        except IndexError:
+            self.voiceName = None
+            rospy.logwarn("Invalid characterID passed to Dialog constuctor")
 
         # if text and filepath are both given, defaults to filepath, discards text
         if text is not None and filepath is not None:
@@ -19,7 +28,7 @@ class Dialog:
             self.text = text
             self.filepath = None
 
-        # if both are None, then both will be set to Nonegit
+        # if both are None, then both will be set to None
         else:
             self.filepath = filepath
             self.text = None

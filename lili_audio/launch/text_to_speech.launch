@@ -1,7 +1,9 @@
 <launch>
   <arg name="audio_topic" default="speaker" />
+  <arg name="sound_path" default="$(find lili_storytelling)/sounds/" />
 
   <node pkg="lili_audio" type="text_to_speech.py" name="text_to_speech" output="screen">
+    <param name="~sound_path" value="$(arg sound_path)" />
     <param name="lang" value="en" />
     <param name="slow" value="false" />
     <remap from="audio" to="$(arg audio_topic)" />
@@ -11,4 +13,7 @@
     <param name="dst" value="alsasink" />
     <remap from="audio" to="$(arg audio_topic)" />
   </node>
+
+  <node pkg="sound_play" type="soundplay_node.py" name="sound_play"></node>
+
 </launch>
